@@ -1,12 +1,11 @@
 import React, { PropTypes } from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-const Player = (props) => {
+const Player = ({ life }) => {
   return (
     <View style={style.view}>
       <View style={style.basicInfoContainer}>
-        <Text style={style.name}>{props.name}</Text>
-        <Text style={style.life}>{props.lifeTotal}</Text>
+        <Text style={style.life}>{life}</Text>
       </View>
     </View>
   )

@@ -1,14 +1,12 @@
 import { observable, computed } from 'mobx';
 
 class Card {
-  guid
-  multiverseId;
   info;
+  multiverseId;
 
-  constructor(guid, multiverseId, card) {
-    this.guid = guid;
-    this.multiverseId = multiverseId;
+  constructor(card, multiverseid) {
     this.info = { ...card };
+    this.multiverseId = multiverseid;
   }
 
   @computed get name() {

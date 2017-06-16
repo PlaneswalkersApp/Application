@@ -8,12 +8,8 @@ class AppStore {
     this.game = null;
   }
 
-  startGame() {
+  createGame() {
     this.game = new Game();
-  }
-
-  resetGame() {
-    this.game.reset();
   }
 
   endGame() {

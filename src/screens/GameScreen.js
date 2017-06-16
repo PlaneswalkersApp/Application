@@ -1,26 +1,49 @@
 import React, { PropTypes } from 'react'
-import { View, Text, Button } from 'react-native';
-import { observer } from 'mobx-react';
-import AppStore from '../stores/App';
-
+import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { observe } from 'mobx';
+import { observer, inject } from 'mobx-react/native';
 import Icon from '../config/icons';
-
-import NotificationWrapperScreen from './NotificationWrapperScreen';
-import SettingsBar from '../components/SettingsBar';
 import Player from '../components/Player';
 
+@inject('app')
+@observer
 class GameScreen extends React.Component {
-  static navigationOptions = ({navigation}) => ({
-    title: 'Game',
-    headerRight: <Button title="Card History" onPress={() => { navigation.navigate('CardHistory', {})}} />
-  });
+  constructor(props) {
+    super(props);
 
-  constructor() {
-    super();
+    observe(this.props.app.game.cardHistory, change => {
+      this.props.screenProps.presentNotification({
+        icon: <Icon name="card" style={{fontSize: 36, color: 'white' }}/>,
+        title: 'A card has been played.',
+        body: 'Player X played a card.',
+        callback: () => { console.log('callback'); }
+      });
+    });
+  }
+
+  componentDidMount() {
+    this.props.app.game.addCard(1);
+  }
+
+  onOpenGameNavigation() {
+    this.props.navigation.navigate('GameNavigation');
   }
 
   render () {
-    return null;
+    const players = this.props.app.game.players.map(player => <Player life={player.life} color={player.color} />);
+
+    return (
+      <View style={styles.view}>
+        <TouchableOpacity onPress={this.onOpenGameNavigation.bind(this)}>
+          <View>
+            <Text>Open navigation</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.playerField}>
+          {players}
+        </View>
+      </View>
+    );
   }
 }
 
