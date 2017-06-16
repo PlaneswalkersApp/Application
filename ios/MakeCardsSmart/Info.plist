@@ -54,6 +54,22 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>icomoon.ttf</string>
+		<string>Butler_Black.otf</string>
+		<string>Butler_Bold.otf</string>
+		<string>Butler_ExtraBold.otf</string>
+		<string>Butler_Light.otf</string>
+		<string>Butler_Medium.otf</string>
+		<string>Butler_Regular.otf</string>
+		<string>Butler_Ultra_Light.otf</string>
+		<string>HKGrotesk-Bold.ttf</string>
+		<string>HKGrotesk-BoldItalic.ttf</string>
+		<string>HKGrotesk-Light.ttf</string>
+		<string>HKGrotesk-LightItalic.ttf</string>
+		<string>HKGrotesk-Medium.ttf</string>
+		<string>HKGrotesk-MediumItalic.ttf</string>
+		<string>HKGrotesk-Regular.ttf</string>
+		<string>HKGrotesk-Semibold.ttf</string>
+		<string>HKGrotesk-SemiBoldItalic.ttf</string>
 	</array>
 </dict>
 </plist>

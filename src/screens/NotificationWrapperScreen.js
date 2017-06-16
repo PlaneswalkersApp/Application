@@ -10,7 +10,6 @@ class NotificationWrapper extends React.Component {
     super();
 
     this.state = {
-      notificationActive: false,
       notificationAnimatedValue: new Animated.Value(0),
       notification: {
         icon: null,
@@ -24,8 +23,7 @@ class NotificationWrapper extends React.Component {
   presentNotification(notification) {
     this.setState({
       ...this.state,
-      notification,
-      notificationActive: true,
+      notification
     });
 
     Animated.timing(
@@ -46,11 +44,6 @@ class NotificationWrapper extends React.Component {
   }
 
   removeNotification() {
-    this.setState({
-      ...this.state,
-      notificationActive: false,
-    });
-
     Animated.timing(
       this.state.notificationAnimatedValue, {
         toValue: 0,
@@ -90,7 +83,7 @@ class NotificationWrapper extends React.Component {
     return (
       <View style={styles.view}>
         <Animated.View style={{ ...styles.notification, top }}>
-          <StatusBar barStyle={(this.state.notificationActive) ? 'light-content' : 'dark-content' } />
+          <StatusBar barStyle="light-content" />
           <View style={styles.statusBarDivider}></View>
           <TouchableOpacity onPress={this.pressNotification.bind(this)}>
             <View style={styles.notificationContent}>
@@ -116,7 +109,7 @@ const styles = {
   },
   statusBarDivider: {
     height: 20,
-    marginBottom: 2
+    marginBottom: 6
   },
   iconContainer: {
     paddingRight: 16

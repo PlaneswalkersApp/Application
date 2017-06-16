@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Dimensions } from 'react-native';
 import { observe } from 'mobx';
 import { observer, inject } from 'mobx-react/native';
 import Icon from '../config/icons';
@@ -8,21 +8,26 @@ import Player from '../components/Player';
 @inject('app')
 @observer
 class GameScreen extends React.Component {
+  static navigationOptions = ({navigation}) => ({
+    header: null,
+    gesturesEnabled: false
+  });
+
   constructor(props) {
     super(props);
 
+    props.app.game.start();
+
     observe(this.props.app.game.cardHistory, change => {
+      const { card } = change.added[0];
+
       this.props.screenProps.presentNotification({
         icon: <Icon name="card" style={{fontSize: 36, color: 'white' }}/>,
-        title: 'A card has been played.',
-        body: 'Player X played a card.',
-        callback: () => { console.log('callback'); }
+        title: 'A spell has been cast!',
+        body: `A ${card.name} has been played.`,
+        callback: () => { this.props.navigation.navigate('CardHistory'); }
       });
     });
-  }
-
-  componentDidMount() {
-    this.props.app.game.addCard(1);
   }
 
   onOpenGameNavigation() {
@@ -30,17 +35,22 @@ class GameScreen extends React.Component {
   }
 
   render () {
-    const players = this.props.app.game.players.map(player => <Player life={player.life} color={player.color} />);
+    const halfSize = Math.ceil(this.props.app.game.players.length / 2);
+    const playerFieldOne = this.props.app.game.players.slice(0, halfSize).map(p => <Player {...p} />);
+    const playerFieldTwo = this.props.app.game.players.slice(halfSize, this.props.app.game.players.size).map(p => <Player {...p} />);
 
     return (
       <View style={styles.view}>
-        <TouchableOpacity onPress={this.onOpenGameNavigation.bind(this)}>
-          <View>
-            <Text>Open navigation</Text>
-          </View>
-        </TouchableOpacity>
         <View style={styles.playerField}>
-          {players}
+          {playerFieldOne}
+        </View>
+        <View style={styles.playerField}>
+          {playerFieldTwo}
+        </View>
+        <View style={styles.settings}>
+          <TouchableOpacity onPress={this.onOpenGameNavigation.bind(this)}>
+            <Text style={styles.settingsIcon}>S</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -49,11 +59,32 @@ class GameScreen extends React.Component {
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#3F3B42',
+    position: 'relative',
+    backgroundColor: '#FFFFFF'
+  },
+  settings: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0 + (Dimensions.get('window').height / 2) - 32,
+    left: 0 + (Dimensions.get('window').width / 2) - 32,
+    zIndex: 5,
+    width: 64,
+    height: 64,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 100
+  },
+  settingsIcon: {
+    color: '#3F3B42'
   },
   playerField: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    position: 'relative',
+    zIndex: 0
   }
 }
 

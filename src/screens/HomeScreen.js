@@ -20,8 +20,13 @@ class HomeScreen extends React.Component {
 
   render () {
     return (
-      <View>
-        <Button title="START A NEW GAME" onPress={this.onStartGame.bind(this)}/>
+      <View style={styles.view}>
+        <Text style={styles.title}>Make Cards Smart</Text>
+        <TouchableOpacity onPress={this.onStartGame.bind(this)}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>START A NEW GAME</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -29,7 +34,33 @@ class HomeScreen extends React.Component {
 
 const styles = {
   view: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#E71D36',
+    paddingLeft: 24,
+    paddingRight: 24,
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 32,
+    color: '#FFFFFF',
+    fontFamily: 'HK Grotesk',
+    fontWeight: 'bold'
+  },
+  button: {
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    paddingTop: 24,
+    paddingBottom: 24,
+    paddingLeft: 32,
+    paddingRight: 32
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#E71D36',
+    fontSize: 24,
+    fontFamily: 'HK Grotesk',
+    fontWeight: 'bold'
   }
 }
 
