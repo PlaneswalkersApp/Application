@@ -1,13 +1,11 @@
 import React, { PropTypes } from 'react'
-import { View, Button, Text, TouchableOpacity } from 'react-native';
+import { View, Button, Text, TextInput, TouchableOpacity } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
 import PlayerInputField from '../components/PlayerInputField';
 
-const MAX_AMOUNT_PLAYERS = [2, 3, 4];
-
 @inject('app')
 @observer
-class PlayerSelection extends React.Component {
+class RoomSelectionScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
     headerStyle: {
       position: 'absolute',
@@ -19,40 +17,39 @@ class PlayerSelection extends React.Component {
   });
 
   constructor(props) {
-    super(props);
+    super();
+
+    this.state = {
+      planeId: ''
+    }
   }
 
-  onChoosePlayer(value) {
-    this.props.app.game.setPlayers(value);
+  onChangePlaneId(value) {
+    this.setState({
+      ...this.state,
+      planeId: value
+    });
   }
 
-  onSetPlayers() {
-    this.props.navigation.navigate('Game');
+  onPressConnect() {
+    this.props.app.createGame(this.state.planeId);
+    this.props.navigation.navigate('Connection');
   }
 
   render () {
-    const playerInputFields = MAX_AMOUNT_PLAYERS.map(playerValue => (
-      <PlayerInputField
-        key={playerValue}
-        value={playerValue}
-        currentValue={this.props.app.game.players.length}
-        onPress={this.onChoosePlayer.bind(this)}
-      />
-    ));
-
     return (
       <View style={styles.view}>
         <View>
           <View style={styles.information}>
-            <Text style={styles.title}>PLAYER AMOUNT</Text>
+            <Text style={styles.title}>CONNECT TO PLANE</Text>
           </View>
-          <View style={styles.playerInputFields}>
-            {playerInputFields}
+          <View style={styles.inputFieldContainer}>
+            <TextInput style={styles.inputField} onChangeText={this.onChangePlaneId.bind(this)} value={this.state.planeId} />
           </View>
         </View>
-        <TouchableOpacity onPress={this.onSetPlayers.bind(this)}>
+        <TouchableOpacity onPress={this.onPressConnect.bind(this)}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}>SET PLAYER AMOUNT</Text>
+            <Text style={styles.buttonText}>CONNECT</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -69,8 +66,15 @@ const styles = {
     justifyContent: 'space-around',
     alignItems: 'center'
   },
-  playerInputFields: {
-    flexDirection: 'row'
+  inputFieldContainer: {
+    flexDirection: 'row',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderStyle: 'solid',
+  },
+  inputField: {
+    height: 80,
+    width: 200
   },
   title: {
     fontSize: 32,
@@ -103,4 +107,4 @@ const styles = {
   }
 }
 
-export default PlayerSelection;
+export default RoomSelectionScreen;

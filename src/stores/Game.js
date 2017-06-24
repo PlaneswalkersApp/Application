@@ -1,5 +1,5 @@
 import { observable, computed, action } from 'mobx';
-
+import socket from 'socket.io-client';
 import Immutable from 'immutable';
 import Card from './Card';
 import Player from './Player';
@@ -9,11 +9,14 @@ const MTG_URI = 'https://api.deckbrew.com/mtg';
 
 class Game {
   ws;
+  socket;
+  planeId;
   @observable players;
   @observable initialLifeTotal;
   @observable cardHistory;
 
-  constructor(initialPlayers = 2, initialLifeTotal = 20, started = false) {
+  constructor(planeId, initialPlayers = 2, initialLifeTotal = 20, started = false) {
+    this.planeId = planeId;
     this.started = started;
     this.initialLifeTotal = initialLifeTotal;
     this.players = [];
@@ -23,20 +26,82 @@ class Game {
   }
 
   start() {
-    this.ws = new WebSocket('ws://localhost:8080', 'echo-protocol');
+    return new Promise((resolve, reject) => {
+      this.socket = socket('http://localhost:3000');
 
-    this.ws.onopen = () => {
-      // this.ws.send('{ "type": "ADD_CARD", "cardId": 3 }');
-    }
+      this.socket.on('error', () => {
+        console.log('error');
+        if (!socket.socket.connected) {
+          reject({
+            type: 'NO_CONNECTION'
+          });
+        }
+      });
 
-    this.ws.onmessage = ({data}) => {
-      try {
-        const json = JSON.parse(data);
-        this.handleMessage(json);
-      } catch (e) {
-        console.log('Invalid JSON.');
-      }
+      this.socket.on('connect', () => {
+        resolve();
+        this.onSocketConnect(resolve, reject);
+      });
+
+      this.socket.on('disconnect', () => {
+        this.onSocketDisconnect();
+      });
+
+      this.socket.on('player', player => {
+        this.handleNewPlayer();
+      });
+
+      this.socket.on('lifeChange', lifeChange => {
+        this.handleLifeChange();
+      });
+
+      this.socket.on('cardPlayed', cardPlayed => {
+        this.handleCardPlayed();
+      });
+    });
+  }
+
+  onSocketConnect() {
+    const planeRegExp = new RegExp(/([a-zA-Z 0-9]){4}/)
+    const planeId = this.planeId;
+
+    if (planeRegExp.test(planeId)) {
+      this.socket.emit('joinPlane', {
+        planeId
+      });
+    } else {
+      reject({
+        type: 'INVALID_PLANE'
+      });
     }
+  }
+
+  onSocketDisconnect() {
+
+  }
+
+  handleConnect() {
+
+  }
+
+  handleDisconnect() {
+
+  }
+
+  handleLifeChange() {
+
+  }
+
+  handleCardPlayed() {
+
+  }
+
+  handleNewPlayer() {
+
+  }
+
+  setPlaneId(planeId) {
+    this.planeId = planeId;
   }
 
   handleMessage(message) {

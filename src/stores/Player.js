@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 const AVAILABLE_COLORS = [
   '#31C7F9',
@@ -23,16 +23,16 @@ class Player {
     return AVAILABLE_COLORS[this.id];
   }
 
-  setLife(life) {
+  @action setLife(life) {
     this.life = life;
   }
 
-  @observable increaseLife(lifeGain) {
-    life += lifeGain;
+  @action incrementLife(lifeGain) {
+    this.life += lifeGain;
   }
 
-  @observable decreaseLife(lifeLoss) {
-    life += lifeLoss;
+  @action decrementLife(lifeLoss) {
+    this.life -= lifeLoss;
   }
 }
 

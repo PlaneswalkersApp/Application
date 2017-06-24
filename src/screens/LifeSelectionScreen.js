@@ -41,6 +41,7 @@ class LifeSelectionScreen extends React.Component {
   render () {
     const lifeInputFields = LIFE_SELECTORS.map(life => (
       <LifeInputField
+        key={life}
         onPressIncrease={this.onPressIncrease.bind(this)}
         onPressDecrease={this.onPressDecrease.bind(this)}
         value={life}

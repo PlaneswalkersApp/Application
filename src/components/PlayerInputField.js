@@ -6,7 +6,6 @@ const PlayerInputField = ({
   value,
   currentValue
 }) => {
-  console.log(value, currentValue);
   const chosenStyle = (value === currentValue) ? { opacity: 1 } : {};
   return (
     <TouchableOpacity onPress={onPress.bind(null, value)}>

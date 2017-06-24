@@ -3,40 +3,26 @@ import { View, Button, Text, TouchableOpacity } from 'react-native';
 import { inject } from 'mobx-react/native';
 
 @inject('app')
-class HomeScreen extends React.Component {
+class ConnectionScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
 
   constructor(props) {
     super(props);
-    props.app.endGame();
-  }
 
-  onStartGame() {
-    this.props.app.createGame(this.props.app.planeId);
-    this.props.navigation.navigate('LifeSelection');
-  }
-
-  onJoinGame() {
-    this.props.navigation.navigate('RoomSelection');
+    props.app.game.start()
+      .then(() => {
+        props.navigation.navigate('GameScreen');
+      })
+      .catch(() => {
+      });
   }
 
   render () {
     return (
       <View style={styles.view}>
-        <Text style={styles.title}>Make Cards Smart</Text>
-        <Text style={styles.title}>{this.props.app.planeId}</Text>
-        <TouchableOpacity onPress={this.onJoinGame.bind(this)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>JOIN GAME</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.onStartGame.bind(this)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>START A NEW GAME</Text>
-          </View>
-        </TouchableOpacity>
+        <Text style={styles.title}>CONNECTING</Text>
       </View>
     );
   }
@@ -48,7 +34,7 @@ const styles = {
     backgroundColor: '#E71D36',
     paddingLeft: 24,
     paddingRight: 24,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   title: {
@@ -74,4 +60,4 @@ const styles = {
   }
 }
 
-export default HomeScreen;
+export default ConnectionScreen;

@@ -36,8 +36,20 @@ class GameScreen extends React.Component {
 
   render () {
     const halfSize = Math.ceil(this.props.app.game.players.length / 2);
-    const playerFieldOne = this.props.app.game.players.slice(0, halfSize).map(p => <Player {...p} />);
-    const playerFieldTwo = this.props.app.game.players.slice(halfSize, this.props.app.game.players.size).map(p => <Player {...p} />);
+    const playerFieldOne = this.props.app.game.players.slice(0, halfSize).map((player) => <Player
+      key={player.color}
+      life={player.life}
+      color={player.color}
+      incrementLife={() => { player.incrementLife(1); }}
+      decrementLife={() => { player.decrementLife(1); }}
+    />);
+    const playerFieldTwo = this.props.app.game.players.slice(halfSize, this.props.app.game.players.length).map((player) => <Player
+      key={player.color}
+      life={player.life}
+      color={player.color}
+      incrementLife={() => { player.incrementLife(1); }}
+      decrementLife={() => { player.decrementLife(1); }}
+    />);
 
     return (
       <View style={styles.view}>
@@ -61,7 +73,6 @@ const styles = {
   view: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#3F3B42',
     position: 'relative',
     backgroundColor: '#FFFFFF'
   },
