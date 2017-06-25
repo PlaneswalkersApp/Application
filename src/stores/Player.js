@@ -9,13 +9,15 @@ const AVAILABLE_COLORS = [
 
 class Player {
   id;
+  nickname;
+  leader;
   color;
-  pickedColors;
   @observable life;
 
-  constructor(id, life) {
+  constructor(id, nickname, leader) {
     this.id = id;
-    this.life = life;
+    this.nickname = nickname;
+    this.leader = leader;
     this.color = this.getRandomColor();
   }
 

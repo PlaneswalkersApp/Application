@@ -12,8 +12,8 @@ import CardHistoryScreen from './screens/CardHistoryScreen';
 import NotificationWrapperScreen from './screens/NotificationWrapperScreen';
 import GameNavigationScreen from './screens/GameNavigationScreen';
 import ConnectionScreen from './screens/ConnectionScreen';
+import NicknameSelectionScreen from './screens/NicknameSelectionScreen';
 import RoomSelectionScreen from './screens/RoomSelectionScreen';
-
 
 const StackNavigation = StackNavigator({
     Home: { screen: HomeScreen, },
@@ -23,6 +23,7 @@ const StackNavigation = StackNavigator({
     PlayerSelection: { screen: PlayerSelectionScreen },
     CardHistory: { screen: CardHistoryScreen },
     Connection: { screen: ConnectionScreen },
+    NicknameSelection: { screen: NicknameSelectionScreen },
     RoomSelection: { screen: RoomSelectionScreen }
   }, {
     initialRouteName: 'Home',

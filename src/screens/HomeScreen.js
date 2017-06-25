@@ -14,7 +14,7 @@ class HomeScreen extends React.Component {
   }
 
   onStartGame() {
-    this.props.app.createGame(this.props.app.planeId);
+    this.props.app.settings.setPlaneId();
     this.props.navigation.navigate('LifeSelection');
   }
 
@@ -26,7 +26,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.view}>
         <Text style={styles.title}>Make Cards Smart</Text>
-        <Text style={styles.title}>{this.props.app.planeId}</Text>
+        <Text style={styles.title}>{this.props.app.settings.localPlaneId}</Text>
         <TouchableOpacity onPress={this.onJoinGame.bind(this)}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>JOIN GAME</Text>

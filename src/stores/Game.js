@@ -4,33 +4,39 @@ import Immutable from 'immutable';
 import Card from './Card';
 import Player from './Player';
 
-const MINIMUM_INITIAL_LIFE_TOTAL = 1;
 const MTG_URI = 'https://api.deckbrew.com/mtg';
 
 class Game {
   ws;
   socket;
   planeId;
+  @observable connected;
   @observable players;
-  @observable initialLifeTotal;
   @observable cardHistory;
 
-  constructor(planeId, initialPlayers = 2, initialLifeTotal = 20, started = false) {
+  constructor(planeId) {
     this.planeId = planeId;
-    this.started = started;
-    this.initialLifeTotal = initialLifeTotal;
+    this.connected = false;
+
     this.players = [];
     this.cardHistory = [];
-
-    this.setPlayers(initialPlayers);
   }
 
-  start() {
+  createPlayer(id, nickname, leader) {
+    this.players.push(
+      new Player(
+        id,
+        nickname,
+        leader
+      )
+    );
+  }
+
+  connect(playerId, playerNickname, leader) {
     return new Promise((resolve, reject) => {
       this.socket = socket('http://localhost:3000');
 
       this.socket.on('error', () => {
-        console.log('error');
         if (!socket.socket.connected) {
           reject({
             type: 'NO_CONNECTION'
@@ -39,35 +45,62 @@ class Game {
       });
 
       this.socket.on('connect', () => {
-        resolve();
-        this.onSocketConnect(resolve, reject);
+        this.onSocketConnect(playerId, playerNickname, leader, resolve, reject);
       });
 
       this.socket.on('disconnect', () => {
         this.onSocketDisconnect();
       });
 
-      this.socket.on('player', player => {
-        this.handleNewPlayer();
-      });
-
-      this.socket.on('lifeChange', lifeChange => {
-        this.handleLifeChange();
-      });
-
-      this.socket.on('cardPlayed', cardPlayed => {
-        this.handleCardPlayed();
+      this.socket.on('playerJoined', player => {
+        this.handleNewPlayer(player);
       });
     });
   }
 
-  onSocketConnect() {
+  @action setConnected(connected) {
+    this.connected = connected;
+  }
+
+  setInitialPlaneData(data) {
+    data.initialPlaneData.players.forEach(player => {
+      this.createPlayer(
+        player.id,
+        player.nickname,
+        player.leader
+      );
+    });
+  }
+
+  start(initialLifeTotal) {
+    this.socket.emit('start', {
+      initialLifeTotal
+    });
+  }
+
+  onSocketConnect(playerId, playerNickname, leader, resolve, reject) {
     const planeRegExp = new RegExp(/([a-zA-Z 0-9]){4}/)
     const planeId = this.planeId;
 
     if (planeRegExp.test(planeId)) {
       this.socket.emit('joinPlane', {
-        planeId
+        planeId,
+        playerId,
+        playerNickname,
+        leader
+      });
+
+      this.socket.on('joinedPlane', data => {
+        if (data.joined) {
+          this.setConnected(true);
+          this.setInitialPlaneData(data);
+          resolve();
+        } else {
+          this.setConnected(false);
+          reject({
+            type: 'NO_ROOM_CONNECTION'
+          })
+        }
       });
     } else {
       reject({
@@ -96,52 +129,20 @@ class Game {
 
   }
 
-  handleNewPlayer() {
-
+  handleNewPlayer(player) {
+    this.createPlayer(
+      player.id,
+      player.nickname,
+      player.leader
+    )
   }
 
   setPlaneId(planeId) {
     this.planeId = planeId;
   }
 
-  handleMessage(message) {
-    switch(message.type) {
-      case 'ADD_CARD': {
-        this.addCard(message.cardId);
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-  }
-
-  setPlayers(amount) {
-    const players = [];
-
-    for (let i = 0; i < amount; i++) {
-      players.push(new Player(i, this.initialLifeTotal));
-    }
-
-    this.players = players;
-  }
-
-  @action increaseInitialLifeTotal(value) {
-    this.initialLifeTotal += value;
-  }
-
-  @action decreaseInitialLifeTotal(value) {
-    if (this.initialLifeTotal - value > MINIMUM_INITIAL_LIFE_TOTAL) {
-      this.initialLifeTotal -= value;
-    } else {
-      this.initialLifeTotal = MINIMUM_INITIAL_LIFE_TOTAL;
-    }
-  }
-
   @action reset() {
     this.cardHistory = [];
-    this.players.forEach(player => { player.setLife(this.initialLifeTotal); });
   }
 
   @action async addCard(cardId) {

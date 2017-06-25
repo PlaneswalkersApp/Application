@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react'
 import { View, Button, Text, TouchableOpacity } from 'react-native';
-import { inject } from 'mobx-react/native';
+import { inject, observer } from 'mobx-react/native';
 
 @inject('app')
+@observer
 class ConnectionScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -11,18 +12,50 @@ class ConnectionScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    props.app.game.start()
-      .then(() => {
-        props.navigation.navigate('GameScreen');
-      })
-      .catch(() => {
-      });
+    props.app.createGame(
+      props.app.settings.planeId
+    );
+
+    props.app.game.connect(
+      props.app.settings.localId,
+      props.app.settings.localNickname,
+      props.app.settings.host
+    );
+  }
+
+  onStartGame() {
+    this.props.app.game.start();
+    this.props.navigation.navigate('Game');
   }
 
   render () {
     return (
       <View style={styles.view}>
-        <Text style={styles.title}>CONNECTING</Text>
+        <View>
+          <Text style={styles.title}>
+            {this.props.app.game.connected ? (
+              `CONNECTED TO ${this.props.app.settings.planeId}`
+            ): (
+              `CONNECTING TO ${this.props.app.settings.planeId}`
+            )}
+          </Text>
+        </View>
+        <View>
+          {this.props.app.game.connected && (
+            this.props.app.game.players.map(player => {
+              return <Text key={player.id}>{player.nickname}</Text>
+            })
+          )}
+        </View>
+        <View>
+          {this.props.app.settings.host && (
+            <TouchableOpacity onPress={this.onStartGame.bind(this)}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}></Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     );
   }

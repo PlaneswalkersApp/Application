@@ -5,7 +5,7 @@ import PlayerInputField from '../components/PlayerInputField';
 
 @inject('app')
 @observer
-class RoomSelectionScreen extends React.Component {
+class NicknameSelectionScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
     headerStyle: {
       position: 'absolute',
@@ -20,20 +20,20 @@ class RoomSelectionScreen extends React.Component {
     super();
 
     this.state = {
-      planeId: ''
+      nickname: ''
     }
   }
 
-  onChangePlaneId(value) {
+  onChangeNickname(value) {
     this.setState({
       ...this.state,
-      planeId: value
+      nickname: value
     });
   }
 
-  onSetRoom() {
-    this.props.app.settings.setPlaneId(this.state.planeId);
-    this.props.navigation.navigate('NicknameSelection');
+  onSetNickname() {
+    this.props.app.settings.setLocalNickname(this.state.nickname);
+    this.props.navigation.navigate('Connection');
   }
 
   render () {
@@ -41,15 +41,15 @@ class RoomSelectionScreen extends React.Component {
       <View style={styles.view}>
         <View>
           <View style={styles.information}>
-            <Text style={styles.title}>PLANE TO JOIN</Text>
+            <Text style={styles.title}>CHOOSE A NICKNAME</Text>
           </View>
           <View style={styles.inputFieldContainer}>
-            <TextInput style={styles.inputField} onChangeText={this.onChangePlaneId.bind(this)} value={this.state.planeId} />
+            <TextInput style={styles.inputField} onChangeText={this.onChangeNickname.bind(this)} value={this.state.planeId} />
           </View>
         </View>
-        <TouchableOpacity onPress={this.onSetRoom.bind(this)}>
+        <TouchableOpacity onPress={this.onSetNickname.bind(this)}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}>SET PLANE</Text>
+            <Text style={styles.buttonText}></Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -107,4 +107,4 @@ const styles = {
   }
 }
 
-export default RoomSelectionScreen;
+export default NicknameSelectionScreen;

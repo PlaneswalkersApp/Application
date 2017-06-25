@@ -8,6 +8,7 @@ const LIFE_SELECTORS = [
   5,
   10
 ];
+const MINIMUM_INITIAL_LIFE_TOTAL = 1;
 
 @inject('app')
 @observer
@@ -22,20 +23,37 @@ class LifeSelectionScreen extends React.Component {
     }
   });
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      initialLifeTotal: props.app.settings.localInitialLifeTotal
+    }
   }
 
   onPressIncrease(value) {
-    this.props.app.game.increaseInitialLifeTotal(value);
+    this.setState({
+      initialLifeTotal: this.state.initialLifeTotal + value
+    });
   }
 
   onPressDecrease(value) {
-    this.props.app.game.decreaseInitialLifeTotal(value);
+    let newInitialLifeTotal;
+
+    if (this.state.initialLifeTotal - value > MINIMUM_INITIAL_LIFE_TOTAL) {
+      newInitialLifeTotal = this.state.initialLifeTotal - value;
+    } else {
+      newInitialLifeTotal = MINIMUM_INITIAL_LIFE_TOTAL;
+    }
+
+    this.setState({
+      initialLifeTotal: newInitialLifeTotal
+    });
   }
 
   onSetInitialLifeTotal() {
-    this.props.navigation.navigate('PlayerSelection');
+    this.props.app.settings.setLocalInitialLifeTotal(this.state.initialLifeTotal);
+    this.props.navigation.navigate('NicknameSelection');
   }
 
   render () {
@@ -53,7 +71,7 @@ class LifeSelectionScreen extends React.Component {
         <View>
           <View style={styles.information}>
             <Text style={styles.title}>INITIAL LIFE TOTAL</Text>
-            <Text style={styles.life}>{this.props.app.game.initialLifeTotal}</Text>
+            <Text style={styles.life}>{this.state.initialLifeTotal}</Text>
           </View>
           <View style={styles.lifeInputFields}>
             {lifeInputFields}
