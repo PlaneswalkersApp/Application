@@ -16,7 +16,6 @@ class GameScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    props.app.game.start();
 
     observe(this.props.app.game.cardHistory, change => {
       const { card } = change.added[0];
@@ -43,6 +42,7 @@ class GameScreen extends React.Component {
       incrementLife={() => { player.incrementLife(1); }}
       decrementLife={() => { player.decrementLife(1); }}
     />);
+
     const playerFieldTwo = this.props.app.game.players.slice(halfSize, this.props.app.game.players.length).map((player) => <Player
       key={player.color}
       life={player.life}
@@ -50,6 +50,8 @@ class GameScreen extends React.Component {
       incrementLife={() => { player.incrementLife(1); }}
       decrementLife={() => { player.decrementLife(1); }}
     />);
+
+    console.log(this.props.app.game);
 
     return (
       <View style={styles.view}>

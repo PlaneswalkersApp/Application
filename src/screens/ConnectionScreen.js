@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { View, Button, Text, TouchableOpacity } from 'react-native';
+import { reaction } from 'mobx';
 import { inject, observer } from 'mobx-react/native';
 
 @inject('app')
@@ -20,12 +21,23 @@ class ConnectionScreen extends React.Component {
       props.app.settings.localId,
       props.app.settings.localNickname,
       props.app.settings.host
-    );
+    ).then(() => {
+      if (!props.app.settings.host) {
+        props.app.game.socket.on('start', () => {
+          props.navigation.navigate('Game');
+        });
+      }
+    });
   }
 
   onStartGame() {
-    this.props.app.game.start();
-    this.props.navigation.navigate('Game');
+    this.props.app.game.preStartGame(
+      this.props.app.settings.planeId,
+      this.props.app.settings.localInitialLifeTotal
+    );
+
+    this.props.app.game.start(this.props.app.settings.localInitialLifeTotal);
+    this.props.navigation.navigate('Game')
   }
 
   render () {
@@ -48,7 +60,7 @@ class ConnectionScreen extends React.Component {
           )}
         </View>
         <View>
-          {this.props.app.settings.host && (
+          {(this.props.app.game.connected && this.props.app.settings.host) && (
             <TouchableOpacity onPress={this.onStartGame.bind(this)}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}></Text>

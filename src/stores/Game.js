@@ -8,28 +8,23 @@ const MTG_URI = 'https://api.deckbrew.com/mtg';
 
 class Game {
   ws;
-  socket;
   planeId;
+
+  @observable socket;
   @observable connected;
+  @observable started;
+
   @observable players;
   @observable cardHistory;
+  @observable initialLifeTotal;
 
   constructor(planeId) {
     this.planeId = planeId;
     this.connected = false;
+    this.started = { started: false};
 
     this.players = [];
     this.cardHistory = [];
-  }
-
-  createPlayer(id, nickname, leader) {
-    this.players.push(
-      new Player(
-        id,
-        nickname,
-        leader
-      )
-    );
   }
 
   connect(playerId, playerNickname, leader) {
@@ -52,10 +47,43 @@ class Game {
         this.onSocketDisconnect();
       });
 
-      this.socket.on('playerJoined', player => {
+      this.socket.on('player', player => {
         this.handleNewPlayer(player);
       });
+
+      this.socket.on('start', data => {
+        this.start(data);
+      })
     });
+  }
+
+  preStartGame(planeId, initialLifeTotal) {
+    this.socket.emit('start', {
+      planeId,
+      initialLifeTotal
+    });
+  }
+
+  @action start(initialLifeTotal) {
+    this.initialLifeTotal = initialLifeTotal;
+    this.started = true;
+    this.setGameDefaults();
+  }
+
+  @action setGameDefaults() {
+    this.players.forEach(p => {
+      p.setLife(this.initialLifeTotal);
+    });
+  }
+
+  @action createPlayer(id, nickname, leader) {
+    this.players.push(
+      new Player(
+        id,
+        nickname,
+        leader
+      )
+    );
   }
 
   @action setConnected(connected) {
@@ -69,12 +97,6 @@ class Game {
         player.nickname,
         player.leader
       );
-    });
-  }
-
-  start(initialLifeTotal) {
-    this.socket.emit('start', {
-      initialLifeTotal
     });
   }
 
