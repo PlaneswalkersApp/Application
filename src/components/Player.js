@@ -1,18 +1,23 @@
 import React, { PropTypes } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Player = ({
+  nickname,
   life,
   color,
-  incrementLife,
-  decrementLife
+  lifeChange,
 }) => {
   return (
     <View style={style.view}>
-      <TouchableOpacity style={[style.increment, { backgroundColor: color }]} onPress={() => { incrementLife()}}>
+      <TouchableOpacity style={[style.increment, { backgroundColor: color }]} onPress={() => { lifeChange(1)}}>
       </TouchableOpacity>
+      <View style={style.lifeContainer}>
+        <Text style={style.nickname}>{nickname}</Text>
         <Text style={style.life}>{life}</Text>
-      <TouchableOpacity style={[style.decrement, { backgroundColor: color }]} onPress={() => { decrementLife() }}>
+        <Icon name="heart" style={style.heart}/>
+      </View>
+      <TouchableOpacity style={[style.decrement, { backgroundColor: color }]} onPress={() => { lifeChange(-1) }}>
       </TouchableOpacity>
     </View>
   )
@@ -28,30 +33,43 @@ const style = {
   },
   increment: {
     flex: 1,
-    backgroundColor: 'red'
-  },
-  decrement: {
-    flex: 1
-  },
-  basicInfoContainer: {
-    zIndex: 200,
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4
+  },
+  decrement: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4
+  },
+  lifeContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    alignSelf: 'center',
+    backgroundColor: 'transparent'
+  },
+  nickname: {
+    fontSize: 24,
+    color: '#000000',
+    fontFamily: 'HK Grotesk',
+    textAlign: 'center'
+  },
+  heart: {
+    fontSize: 32,
+    fontFamily: 'HK Grotesk',
+    color: '#000000',
+    textAlign: 'center',
+    zIndex: 2
   },
   life: {
-    position: 'absolute',
-    zIndex: 12312,
-    alignSelf: 'center',
-    backgroundColor: 'transparent',
     fontSize: 96,
     fontFamily: 'HK Grotesk',
-    color: '#000000'
+    color: '#000000',
+    textAlign: 'center',
+    zIndex: 2
   }
 };
 

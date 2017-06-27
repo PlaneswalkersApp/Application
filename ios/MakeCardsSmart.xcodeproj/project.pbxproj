@@ -41,6 +41,7 @@
 		AE1515201EF164EC004B853B /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE15151D1EF164EC004B853B /* icomoon.ttf */; };
 		AE1515211EF164EC004B853B /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE15151D1EF164EC004B853B /* icomoon.ttf */; };
 		AE235AE11EEBF97200F3AA3B /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE235AC91EEBF90900F3AA3B /* libRCTPushNotification.a */; };
+		AE66B3F61F000FE800C985F6 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE66B3F51F000FE800C985F6 /* FontAwesome.ttf */; };
 		AED197811EF4511000C0368C /* Butler_Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = AED1977A1EF4511000C0368C /* Butler_Black.otf */; };
 		AED197821EF4511000C0368C /* Butler_Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AED1977B1EF4511000C0368C /* Butler_Bold.otf */; };
 		AED197831EF4511000C0368C /* Butler_ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AED1977C1EF4511000C0368C /* Butler_ExtraBold.otf */; };
@@ -307,6 +308,7 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		AE15151D1EF164EC004B853B /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = icomoon.ttf; sourceTree = "<group>"; };
 		AE235AB91EEBF90800F3AA3B /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		AE66B3F51F000FE800C985F6 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		AED1977A1EF4511000C0368C /* Butler_Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Butler_Black.otf; sourceTree = "<group>"; };
 		AED1977B1EF4511000C0368C /* Butler_Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Butler_Bold.otf; sourceTree = "<group>"; };
 		AED1977C1EF4511000C0368C /* Butler_ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Butler_ExtraBold.otf; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 		AE15156A1EF18079004B853B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AE66B3F51F000FE800C985F6 /* FontAwesome.ttf */,
 				AE15151D1EF164EC004B853B /* icomoon.ttf */,
 				AED1977A1EF4511000C0368C /* Butler_Black.otf */,
 				AED1977B1EF4511000C0368C /* Butler_Bold.otf */,
@@ -988,6 +991,7 @@
 				AED197811EF4511000C0368C /* Butler_Black.otf in Resources */,
 				AED197C51EF4513A00C0368C /* HKGrotesk-Italic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				AE66B3F61F000FE800C985F6 /* FontAwesome.ttf in Resources */,
 				AED197CB1EF4513A00C0368C /* HKGrotesk-SemiBold.ttf in Resources */,
 				AED197C61EF4513A00C0368C /* HKGrotesk-Light.ttf in Resources */,
 				AED197CA1EF4513A00C0368C /* HKGrotesk-Regular.ttf in Resources */,

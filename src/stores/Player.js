@@ -1,10 +1,13 @@
 import { observable, action } from 'mobx';
 
 const AVAILABLE_COLORS = [
-  '#31C7F9',
-  '#E71D36',
+  '#40BCD8',
   '#35F4A2',
-  '#FFE760'
+  '#FFD700',
+  '#E75A7C',
+  '#89BD9E',
+  '#FCA17D',
+  '#7DE2D1'
 ];
 
 class Player {
@@ -22,19 +25,15 @@ class Player {
   }
 
   getRandomColor() {
-    return AVAILABLE_COLORS[this.id];
+    return AVAILABLE_COLORS[Math.floor(Math.random() * AVAILABLE_COLORS.length)];
   }
 
   @action setLife(life) {
     this.life = life;
   }
 
-  @action incrementLife(lifeGain) {
-    this.life += lifeGain;
-  }
-
-  @action decrementLife(lifeLoss) {
-    this.life -= lifeLoss;
+  @action changeLife(life) {
+    this.life += life;
   }
 }
 

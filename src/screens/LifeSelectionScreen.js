@@ -19,8 +19,8 @@ class LifeSelectionScreen extends React.Component {
       top: 0,
       marginLeft: 6,
       marginRight: 6,
-      color: 'white'
-    }
+    },
+    headerTintColor: '#FFFFFF'
   });
 
   constructor(props) {

@@ -11,9 +11,9 @@ class NicknameSelectionScreen extends React.Component {
       position: 'absolute',
       top: 0,
       marginLeft: 6,
-      marginRight: 6,
-      color: 'white'
-    }
+      marginRight: 6
+    },
+    headerTintColor: '#FFFFFF'
   });
 
   constructor(props) {
@@ -39,17 +39,16 @@ class NicknameSelectionScreen extends React.Component {
   render () {
     return (
       <View style={styles.view}>
-        <View>
-          <View style={styles.information}>
-            <Text style={styles.title}>CHOOSE A NICKNAME</Text>
-          </View>
-          <View style={styles.inputFieldContainer}>
-            <TextInput style={styles.inputField} onChangeText={this.onChangeNickname.bind(this)} value={this.state.planeId} />
-          </View>
+        <Text style={styles.title}>CHOOSE A NICKNAME</Text>
+
+        <View style={styles.inputFieldContainer}>
+          <Text style={styles.inputFieldLabel}>NICKNAME</Text>
+          <TextInput style={styles.inputField} onChangeText={this.onChangeNickname.bind(this)} value={this.state.planeId} autoCorrect={false}/>
         </View>
+
         <TouchableOpacity onPress={this.onSetNickname.bind(this)}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}></Text>
+            <Text style={styles.buttonText}>SET NICKNAME</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -67,14 +66,25 @@ const styles = {
     alignItems: 'center'
   },
   inputFieldContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'center',
     borderColor: 'white',
-    borderWidth: 1,
+    borderBottomWidth: 2,
     borderStyle: 'solid',
+  },
+  inputFieldLabel: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontFamily: 'HK Grotesk'
   },
   inputField: {
     height: 80,
-    width: 200
+    width: 200,
+    color: '#FFFFFF',
+    fontSize: 32,
+    fontFamily: 'HK Grotesk',
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   title: {
     fontSize: 32,

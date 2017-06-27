@@ -10,7 +10,9 @@ class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    props.app.endGame();
+  }
+
+  componentDidMount() {
   }
 
   onStartGame() {
@@ -25,18 +27,30 @@ class HomeScreen extends React.Component {
   render () {
     return (
       <View style={styles.view}>
-        <Text style={styles.title}>Make Cards Smart</Text>
-        <Text style={styles.title}>{this.props.app.settings.localPlaneId}</Text>
-        <TouchableOpacity onPress={this.onJoinGame.bind(this)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>JOIN GAME</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.onStartGame.bind(this)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>START A NEW GAME</Text>
-          </View>
-        </TouchableOpacity>
+        <Text style={styles.appTitle}>Planeswalkers</Text>
+
+        <View>
+          <Text style={styles.title}>
+            PLANE CODE
+          </Text>
+
+          <Text style={styles.title}>
+            {this.props.app.settings.localPlaneId}
+          </Text>
+        </View>
+
+        <View>
+          <TouchableOpacity onPress={this.onJoinGame.bind(this)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>JOIN PLANE</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onStartGame.bind(this)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>START A NEW PLANE</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -45,17 +59,25 @@ class HomeScreen extends React.Component {
 const styles = {
   view: {
     flex: 1,
-    backgroundColor: '#E71D36',
+    backgroundColor: '#40BCD8',
     paddingLeft: 24,
     paddingRight: 24,
     justifyContent: 'space-around',
     alignItems: 'center'
   },
+  appTitle: {
+    fontSize: 48,
+    color: '#FFFFFF',
+    fontFamily: 'HK Grotesk',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
   title: {
     fontSize: 32,
     color: '#FFFFFF',
     fontFamily: 'HK Grotesk',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   button: {
     borderRadius: 8,
@@ -63,11 +85,12 @@ const styles = {
     paddingTop: 24,
     paddingBottom: 24,
     paddingLeft: 32,
-    paddingRight: 32
+    paddingRight: 32,
+    marginBottom: 16
   },
   buttonText: {
     textAlign: 'center',
-    color: '#E71D36',
+    color: '#40BCD8',
     fontSize: 24,
     fontFamily: 'HK Grotesk',
     fontWeight: 'bold'

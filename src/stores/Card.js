@@ -6,7 +6,7 @@ class Card {
 
   constructor(card, multiverseid) {
     this.info = { ...card };
-    this.multiverseId = multiverseid;
+    this.multiverseId = Number.parseInt(multiverseid);
   }
 
   @computed get name() {

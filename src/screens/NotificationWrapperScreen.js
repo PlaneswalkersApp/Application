@@ -26,6 +26,8 @@ class NotificationWrapper extends React.Component {
       notification
     });
 
+    console.log('hello');
+
     Animated.timing(
       this.state.notificationAnimatedValue, {
         toValue: 1,
@@ -85,6 +87,7 @@ class NotificationWrapper extends React.Component {
         <Animated.View style={{ ...styles.notification, top }}>
           <StatusBar barStyle="light-content" />
           <View style={styles.statusBarDivider}></View>
+
           <TouchableOpacity onPress={this.pressNotification.bind(this)}>
             <View style={styles.notificationContent}>
               <View style={styles.iconContainer}>
@@ -122,11 +125,12 @@ const styles = {
     paddingRight: 20,
     height: 76,
     position: 'absolute',
+    top: 0,
     left: 0,
     right: 0,
     backgroundColor: 'black',
     opacity: 0.85,
-    zIndex: 72839413241
+    zIndex: 20
   },
   title: {
     color: 'white',

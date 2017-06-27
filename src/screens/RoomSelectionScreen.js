@@ -12,8 +12,8 @@ class RoomSelectionScreen extends React.Component {
       top: 0,
       marginLeft: 6,
       marginRight: 6,
-      color: 'white'
-    }
+    },
+    headerTintColor: '#FFFFFF'
   });
 
   constructor(props) {
@@ -27,7 +27,7 @@ class RoomSelectionScreen extends React.Component {
   onChangePlaneId(value) {
     this.setState({
       ...this.state,
-      planeId: value
+      planeId: value.toLowerCase()
     });
   }
 
@@ -39,14 +39,13 @@ class RoomSelectionScreen extends React.Component {
   render () {
     return (
       <View style={styles.view}>
-        <View>
-          <View style={styles.information}>
-            <Text style={styles.title}>PLANE TO JOIN</Text>
-          </View>
-          <View style={styles.inputFieldContainer}>
-            <TextInput style={styles.inputField} onChangeText={this.onChangePlaneId.bind(this)} value={this.state.planeId} />
-          </View>
+        <Text style={styles.title}>PLANE TO JOIN</Text>
+
+        <View style={styles.inputFieldContainer}>
+          <Text style={styles.inputFieldLabel}>PLANE ID</Text>
+          <TextInput style={styles.inputField} onChangeText={this.onChangePlaneId.bind(this)} value={this.state.planeId} autoCorrect={false} />
         </View>
+
         <TouchableOpacity onPress={this.onSetRoom.bind(this)}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>SET PLANE</Text>
@@ -60,21 +59,32 @@ class RoomSelectionScreen extends React.Component {
 const styles = {
   view: {
     flex: 1,
-    backgroundColor: '#35F4A2',
+    backgroundColor: '#E75A7C',
     paddingLeft: 24,
     paddingRight: 24,
     justifyContent: 'space-around',
     alignItems: 'center'
   },
   inputFieldContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'center',
     borderColor: 'white',
-    borderWidth: 1,
+    borderBottomWidth: 2,
     borderStyle: 'solid',
+  },
+  inputFieldLabel: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontFamily: 'HK Grotesk'
   },
   inputField: {
     height: 80,
-    width: 200
+    width: 200,
+    color: '#FFFFFF',
+    fontSize: 32,
+    fontFamily: 'HK Grotesk',
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   title: {
     fontSize: 32,
@@ -100,7 +110,7 @@ const styles = {
   },
   buttonText: {
     textAlign: 'center',
-    color: '#35F4A2',
+    color: '#E75A7C',
     fontSize: 24,
     fontFamily: 'HK Grotesk',
     fontWeight: 'bold'

@@ -2,12 +2,14 @@ import React, { PropTypes } from 'react'
 import { View, Button, Text, TouchableOpacity } from 'react-native';
 import { reaction } from 'mobx';
 import { inject, observer } from 'mobx-react/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('app')
 @observer
 class ConnectionScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    gesturesEnabled: false
   };
 
   constructor(props) {
@@ -43,27 +45,29 @@ class ConnectionScreen extends React.Component {
   render () {
     return (
       <View style={styles.view}>
-        <View>
-          <Text style={styles.title}>
-            {this.props.app.game.connected ? (
-              `CONNECTED TO ${this.props.app.settings.planeId}`
-            ): (
-              `CONNECTING TO ${this.props.app.settings.planeId}`
-            )}
-          </Text>
-        </View>
-        <View>
+        <Text style={styles.title}>
+          {this.props.app.game.connected ? (
+            `CONNECTED TO ${this.props.app.settings.planeId}`
+          ): (
+            `CONNECTING TO ${this.props.app.settings.planeId}`
+          )}
+        </Text>
+
+        <View style={styles.connectedPlayerList}>
           {this.props.app.game.connected && (
-            this.props.app.game.players.map(player => {
-              return <Text key={player.id}>{player.nickname}</Text>
-            })
+            this.props.app.game.players.map(player => <View style={styles.playerContainer}>
+                {player.leader && <Icon name="star" style={styles.leaderIcon}/>}
+                <Text key={player.id} style={styles.player}>{player.nickname}</Text>
+              </View>
+            )
           )}
         </View>
+
         <View>
           {(this.props.app.game.connected && this.props.app.settings.host) && (
             <TouchableOpacity onPress={this.onStartGame.bind(this)}>
               <View style={styles.button}>
-                <Text style={styles.buttonText}></Text>
+                <Text style={styles.buttonText}>WARP TO PLANE</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -76,16 +80,37 @@ class ConnectionScreen extends React.Component {
 const styles = {
   view: {
     flex: 1,
-    backgroundColor: '#E71D36',
+    backgroundColor: '#FCA17D',
     paddingLeft: 24,
     paddingRight: 24,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   title: {
     fontSize: 32,
     color: '#FFFFFF',
     fontFamily: 'HK Grotesk',
+    fontWeight: 'bold'
+  },
+  connectedPlayerList: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  playerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  leaderIcon: {
+    marginLeft: 8,
+    marginRight: 8,
+    color: '#FFD700',
+    fontSize: 32
+  },
+  player: {
+    color: '#FFFFFF',
+    fontSize: 32,
+    fontFamily: 'HK Grotesk',
+    textAlign: 'center',
     fontWeight: 'bold'
   },
   button: {
@@ -98,7 +123,7 @@ const styles = {
   },
   buttonText: {
     textAlign: 'center',
-    color: '#E71D36',
+    color: '#FCA17D',
     fontSize: 24,
     fontFamily: 'HK Grotesk',
     fontWeight: 'bold'

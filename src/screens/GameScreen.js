@@ -4,6 +4,8 @@ import { observe } from 'mobx';
 import { observer, inject } from 'mobx-react/native';
 import Icon from '../config/icons';
 import Player from '../components/Player';
+import IconAwesome from 'react-native-vector-icons/FontAwesome';
+
 
 @inject('app')
 @observer
@@ -16,10 +18,8 @@ class GameScreen extends React.Component {
   constructor(props) {
     super(props);
 
-
     observe(this.props.app.game.cardHistory, change => {
       const { card } = change.added[0];
-
       this.props.screenProps.presentNotification({
         icon: <Icon name="card" style={{fontSize: 36, color: 'white' }}/>,
         title: 'A spell has been cast!',
@@ -37,21 +37,19 @@ class GameScreen extends React.Component {
     const halfSize = Math.ceil(this.props.app.game.players.length / 2);
     const playerFieldOne = this.props.app.game.players.slice(0, halfSize).map((player) => <Player
       key={player.color}
+      nickname={player.nickname}
       life={player.life}
       color={player.color}
-      incrementLife={() => { player.incrementLife(1); }}
-      decrementLife={() => { player.decrementLife(1); }}
+      lifeChange={(life) => { this.props.app.game.emitChangePlayerLife(this.props.app.settings.planeId, player.id, life); }}
     />);
 
     const playerFieldTwo = this.props.app.game.players.slice(halfSize, this.props.app.game.players.length).map((player) => <Player
       key={player.color}
+      nickname={player.nickname}
       life={player.life}
       color={player.color}
-      incrementLife={() => { player.incrementLife(1); }}
-      decrementLife={() => { player.decrementLife(1); }}
+      lifeChange={(life) => { this.props.app.game.emitChangePlayerLife(this.props.app.settings.planeId, player.id, life); }}
     />);
-
-    console.log(this.props.app.game);
 
     return (
       <View style={styles.view}>
@@ -63,7 +61,7 @@ class GameScreen extends React.Component {
         </View>
         <View style={styles.settings}>
           <TouchableOpacity onPress={this.onOpenGameNavigation.bind(this)}>
-            <Text style={styles.settingsIcon}>S</Text>
+            <IconAwesome name="cog" style={styles.settingsIcon}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -76,7 +74,7 @@ const styles = {
     flex: 1,
     flexDirection: 'column',
     position: 'relative',
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#242424'
   },
   settings: {
     justifyContent: 'center',
@@ -87,11 +85,12 @@ const styles = {
     zIndex: 5,
     width: 64,
     height: 64,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#E71D36',
     borderRadius: 100
   },
   settingsIcon: {
-    color: '#3F3B42'
+    color: '#FFFFFF',
+    fontSize: 48
   },
   playerField: {
     flex: 1,

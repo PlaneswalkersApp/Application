@@ -13,9 +13,9 @@ class PlayerSelection extends React.Component {
       position: 'absolute',
       top: 0,
       marginLeft: 6,
-      marginRight: 6,
-      color: 'white'
-    }
+      marginRight: 6
+    },
+    headerTintColor: '#FFFFFF'
   });
 
   constructor(props) {

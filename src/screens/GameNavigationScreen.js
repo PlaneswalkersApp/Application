@@ -10,19 +10,28 @@ class GameNavigationScreen extends React.Component {
       position: 'absolute',
       top: 0,
       marginLeft: 6,
-      marginRight: 6,
-      color: 'white'
-    }
+      marginRight: 6
+    },
+    headerTintColor: '#FFFFFF'
   });
 
   onReset() {
+    this.props.app.game.emitReset(this.props.app.settings.planeId);
     this.props.app.game.reset();
+
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
   }
 
   onNewGame() {
-
+    this.props.navigation.dispatch(NavigationActions.reset(
+      {
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Home'})
+        ]
+      })
+    );
   }
 
   onCardHistory() {

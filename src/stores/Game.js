@@ -68,9 +68,33 @@ class Game {
     this.initialLifeTotal = initialLifeTotal;
     this.started = true;
     this.setGameDefaults();
+
+    this.socket.on('playerLifeChange', (data) => {
+      this.changePlayerLife(data.playerId, data.lifeChange);
+    });
+
+    this.socket.on('cardPlayed', (data) => {
+      this.addCard(data);
+    });
+
+    this.socket.on('reset', () => {
+      this.setGameDefaults();
+    });
+  }
+
+  @action emitReset(planeId) {
+    this.socket.emit('reset', {
+      planeId
+    });
+  }
+
+  reset() {
+    this.setGameDefaults();
   }
 
   @action setGameDefaults() {
+    this.cardHistory = [];
+
     this.players.forEach(p => {
       p.setLife(this.initialLifeTotal);
     });
@@ -86,6 +110,25 @@ class Game {
     );
   }
 
+  emitChangePlayerLife(planeId, playerId, lifeChange) {
+    this.socket.emit('playerLifeChange', {
+      planeId,
+      playerId,
+      lifeChange
+    });
+
+    this.changePlayerLife(playerId, lifeChange);
+  }
+
+  @action changePlayerLife(playerId, lifeChange) {
+    const planeId = this.planeId;
+
+    if (this.players.find(player => player.id === playerId)) {
+      const player = this.players.find(player => player.id === playerId);
+      player.changeLife(lifeChange);
+    }
+  }
+
   @action setConnected(connected) {
     this.connected = connected;
   }
@@ -93,11 +136,15 @@ class Game {
   setInitialPlaneData(data) {
     data.initialPlaneData.players.forEach(player => {
       this.createPlayer(
-        player.id,
+        player.playerId,
         player.nickname,
         player.leader
       );
     });
+  }
+
+  onSocketDisconnect() {
+
   }
 
   onSocketConnect(playerId, playerNickname, leader, resolve, reject) {
@@ -131,26 +178,6 @@ class Game {
     }
   }
 
-  onSocketDisconnect() {
-
-  }
-
-  handleConnect() {
-
-  }
-
-  handleDisconnect() {
-
-  }
-
-  handleLifeChange() {
-
-  }
-
-  handleCardPlayed() {
-
-  }
-
   handleNewPlayer(player) {
     this.createPlayer(
       player.id,
@@ -161,10 +188,6 @@ class Game {
 
   setPlaneId(planeId) {
     this.planeId = planeId;
-  }
-
-  @action reset() {
-    this.cardHistory = [];
   }
 
   @action async addCard(cardId) {
